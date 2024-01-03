@@ -24,7 +24,7 @@
 
     <div class="container pt-5">
       <h3 class="text-center">Register</h3>
-      <div class="col-6 mx-auto">
+      <div class="col-6 mx-auto" id="registerForm">
         <div class="mb-3">
           <label for="firstName" class="form-label">First Name</label>
 
@@ -58,7 +58,79 @@
 
           <input type="tel" class="form-control" id="phoneNumber" />
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="button" class="btn btn-primary" onclick="createUser()">
+          Register
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="sucessModal"
+      tabindex="-1"
+      aria-labelledby="sucessModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-success" id="sucessModalLabel">
+              User Created Sucessfully
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-success">User Created Sucessfully</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="unsucessModal"
+      tabindex="-1"
+      aria-labelledby="unsucessModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger" id="unsucessModalLabel">
+              User Failed to be created
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-danger">User Failed to be created</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
@@ -69,5 +141,33 @@
     crossorigin="anonymous"
   ></script>
 
-  <script></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    function createUser() {
+      const userDetails = {
+        firstname: document.getElementById('firstName').value,
+        lastname: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        phonenumber: document.getElementById('phoneNumber').value,
+      };
+      axios
+        .post('http://localhost:3000/api/users', userDetails)
+        .then((response) => {
+          console.log('Response:', response.data);
+          var myModal = new bootstrap.Modal(
+            document.getElementById('sucessModal')
+          );
+          myModal.show();
+        })
+        .catch((error) => {
+          console.error('Error making POST request:', error);
+          var myModal = new bootstrap.Modal(
+            document.getElementById('unsucessModal')
+          );
+          myModal.show();
+        });
+    }
+  </script>
 </html>
